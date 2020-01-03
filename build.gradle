@@ -11,17 +11,8 @@ version = versionDetails().lastTag
 sourceCompatibility = '1.8'
 targetCompatibility = 1.8
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven {
-        url 'https://pkgs.dev.azure.com/1422016/_packaging/1422016/maven/v1'
-        credentials {
-            username "AZURE_ARTIFACTS"
-            password System.getenv("AZURE_ARTIFACTS_ENV_ACCESS_TOKEN") ?: "${azureArtifactsGradleAccessToken}"
-        }
-    }
-}
+gradle.ext.publishRepo = 'https://maven.pkg.github.com/dominiccobo-fyp/github-processing-utils'
+apply from: 'https://raw.githubusercontent.com/dominiccobo-fyp/build-common/master/repositories.gradle'
 
 dependencies {
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
@@ -29,23 +20,6 @@ dependencies {
     testImplementation group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
     testImplementation group: 'junit', name: 'junit', version: '4.12'
     testImplementation 'com.google.truth:truth:1.0'
-}
-
-publishing {
-    repositories {
-        maven {
-            url 'https://pkgs.dev.azure.com/1422016/_packaging/1422016/maven/v1'
-            credentials {
-                username "AZURE_ARTIFACTS"
-                password System.getenv("AZURE_ARTIFACTS_ENV_ACCESS_TOKEN") ?: "${azureArtifactsGradleAccessToken}"
-            }
-        }
-    }
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
 }
 
 tasks.withType(JavaCompile) {
